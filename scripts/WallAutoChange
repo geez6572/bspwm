@@ -1,0 +1,7 @@
+#!/bin/bash
+
+wall_dir="$HOME/.config/bspwm/rices/$RICETHEME"/walls
+while true; do
+	feh -z --recursive --no-fehbg --randomize --bg-fill $wall_dir
+	sleep 5m
+done

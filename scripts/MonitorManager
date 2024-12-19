@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Interval for checking the monitor status (in seconds)
+
+# Function to configure monitors based on the connected count
+configure_monitors() {
+    # Get the connected monitors
+    connected_monitors=$(xrandr --query | grep " connected" | wc -l)
+
+    # Get the names of the monitors
+    internal_monitor=$(xrandr --query | grep " connected" | grep "eDP" | cut -d' ' -f1)
+    external_monitor=$(xrandr --query | grep " connected" | grep -v "eDP" | cut -d' ' -f1)
+
+    if [ $connected_monitors -eq 2 ]; then
+        # If there are two monitors connected, use the external monitor
+        xrandr --output $internal_monitor --off --output $external_monitor --auto
+        bspc monitor DP-1 -d '1' '2' '3' '4' '5' '6' '7' '8' '9'
+    elif [ $connected_monitors -eq 1]; then
+        # If there is only one monitor connected, use the internal monitor
+        xrandr --output $internal_monitor --auto
+        bspc monitor eDP-1 -d '1' '2' '3' '4' '5' '6' '7' '8' '9'
+    fi
+
+}
+
+# Infinite loop to continuously check and configure monitors
+configure_monitors
